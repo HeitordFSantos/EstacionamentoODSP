@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".CadastroActivity">
+
+    <TextView
+        android:id="@+id/textViewCadastroTitle"
+        android:layout_width="377dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/title_cadastro"
+        android:textColor="@color/ondadura_black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/buttonlistarTodos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/ondadura_purple"
+        android:text="@string/button_listar_todos"
+        android:textColor="@color/ondadura_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewCadastroTitle"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="526dp" />
+
+    <EditText
+        android:id="@+id/editTextBuscaPlaca"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:autofillHints="Placa"
+        android:hint="@string/hint_buscar_placa"
+        android:inputType="textCapCharacters"
+        app:layout_constraintEnd_toStartOf="@+id/buttonBuscar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonlistarTodos"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="96dp" />
+
+    <Button
+        android:id="@+id/buttonBuscar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/button_buscar"
+        app:layout_constraintBottom_toBottomOf="@id/editTextBuscaPlaca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/editTextBuscaPlaca"
+        tools:layout_editor_absoluteX="263dp"
+        tools:layout_editor_absoluteY="95dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextBuscaPlaca" />
+
+    <LinearLayout
+        android:id="@+id/layoutDadosVeiculo"
+        android:layout_width="399dp"
+        android:layout_height="387dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="162dp"
+        tools:visibility="visible">
+
+        <EditText
+            android:id="@+id/editTextNomeEdicao"
+            android:layout_width="390dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="4dp"
+            android:hint="@string/nome"
+            android:autofillHints="name"
+            android:inputType="textPersonName|textCapWords" />
+
+        <EditText
+            android:id="@+id/editTextTelefoneEdicao"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:hint="@string/telefone"
+            android:autofillHints="tel"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/editTextModeloEdicao"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:autofillHints="modelo"
+            android:hint="@string/modelo"
+            android:inputType="textCapWords" />
+
+        <Button
+            android:id="@+id/buttonAlterar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/ondadura_purple"
+            android:text="@string/button_alterar" />
+
+        <Button
+            android:id="@+id/buttonExcluir"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/button_excluir"
+            android:textColor="@android:color/holo_red_dark" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonVoltarCadastro"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_voltar"
+        android:textColor="@color/ondadura_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/ondadura_purple"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="622dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

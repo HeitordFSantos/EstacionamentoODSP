@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+<!-- Base application theme. -->
+<style name="Theme.EstacionamentoODSP" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <item name="colorPrimary">@color/ondadura_black</item>
+    <item name="colorOnPrimary">@color/ondadura_white</item>
+    <item name="android:windowBackground">@color/ondadura_yellow</item>
+</style>
+</resources>

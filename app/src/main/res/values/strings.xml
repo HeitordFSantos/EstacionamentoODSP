@@ -1,0 +1,57 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Estacionamento ODSP</string>
+
+    <!-- Textos para a Tela Principal -->
+    <string name="title">Onda Dura São Paulo</string>
+    <string name="button_entrada">ENTRADA</string>
+    <string name="button_saida">SAÍDA</string>
+    <string name="button_relatorio">RELATÓRIO</string>
+    <string name="button_cadastro">CADASTRO</string>
+    <string name="creator">Desenvolvido por Heitor</string>
+    <!-- NOVOS TEXTOS PARA A TELA DE ENTRADA -->
+    <string name="title_entrada">ENTRADA DE VEÍCULOS</string>
+    <string name="placa">PLACA</string>
+    <string name="nome">NOME DO DONO</string>
+    <string name="telefone">TELEFONE</string>
+    <string name="marca">MARCA</string>
+    <string name="modelo">MODELO</string>
+    <string name="button_voltar">VOLTAR</string>
+    <string name="button_confirmar">CONFIRMAR</string>
+    <!-- NOVOS TEXTOS PARA A TELA DE SAIDA -->
+    <string name="SaidaTItle">SAÍDA DE VEÍCULOS</string>
+    <string name="buttonLista">LISTA DE CARROS NO PÁTIO</string>
+    <string name="PlacaSaida">DIGITE A PLACA PARA A SAÍDA</string>
+    <string name="ConfirmarSaida">Registrar Saída</string>
+    <string name="VoltarMenu">Voltar</string>
+    <!--NOVOS TEXTOS PARA A TELA DE LISTA -->
+    <string name="title_lista">Veículos no Pátio</string>
+    <string name="buttonVoltarLista">Voltar</string>
+    <string name="linearLayoutCarros">Veículos no Pátio</string>
+    <string name="patio_vazio">Pátio vazio.</string>
+    <!-- NOVOS TEXTOS PARA A TELA DE RELATÓRIO -->
+    <string name="title_relatorio">Relatório de Veículos</string>
+    <string name="hint_data_relatorio">Digite o Dia (DD/MM/AAAA)</string>
+    <string name="button_gerar_relatorio">GERAR RELATÓRIO</string>
+    <string name="nenhum_registro">Nenhum registro encontrado para este período.</string>
+    <string name="button_exportar_pdf">EXPORTAR PARA PDF</string>
+    <string name="tipo_relatorio_diario">Diário</string>
+    <string name="tipo_relatorio_mensal">Mensal</string>
+    <string name="tipo_relatorio_anual">Anual</string>
+    <string name="hint_periodo_mensal">Digite o Mês e Ano (MM/AAAA)</string>
+    <string name="hint_periodo_anual">Digite o Ano (AAAA)</string>
+    <!-- NOVOS TEXTOS PARA TELA CADASTRO -->
+    <string name="title_cadastro">Gerenciar Cadastros</string>
+    <string name="hint_buscar_placa">Digite a Placa para Buscar</string>
+    <string name="button_buscar">BUSCAR</string>
+    <string name="button_alterar">ALTERAR DADOS</string>
+    <string name="button_excluir">EXCLUIR REGISTRO</string>
+    <string name="veiculo_nao_encontrado">Veículo não encontrado.</string>
+    <string name="dados_alterados_sucesso">Dados alterados com sucesso!</string>
+    <string name="erro_alterar_dados">Erro ao alterar os dados.</string>
+    <string name="registro_excluido_sucesso">Registro excluído com sucesso!</string>
+    <string name="erro_excluir_registro">Erro ao excluir o registro.</string>
+    <string name="button_listar_todos">LISTAR TODOS</string>
+    <string name="button_ver_todos">VER TODOS OS CADASTROS</string>
+    <string name="title_lista_todos">Todos os Veículos Cadastrados</string>
+
+</resources>
