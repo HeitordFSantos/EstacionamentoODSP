@@ -33,15 +33,15 @@ class SaidaActivity : AppCompatActivity() {
         container.removeAllViews()
 
         val projection = arrayOf(
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA
+            DatabaseContract.PatioEntry.COLUMN_NAME_PLACA,
+            DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO,
+            DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA,
+            DatabaseContract.PatioEntry.COLUMN_NAME_DATA_SAIDA
         )
 
         // Busca sem filtro para trazer todos os registros
         val cursor: Cursor = db.query(
-            DatabaseContract.VeiculoEntry.TABLE_NAME,
+            DatabaseContract.PatioEntry.TABLE_NAME,
             projection, null, null, null, null, null
         )
 
@@ -51,10 +51,10 @@ class SaidaActivity : AppCompatActivity() {
             container.addView(textViewVazio)
         } else {
             while (cursor.moveToNext()) {
-                val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA))
-                val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
-                val dataEntrada = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA))
-                val dataSaida = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA))
+                val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_PLACA))
+                val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO))
+                val dataEntrada = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA))
+                val dataSaida = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_SAIDA))
 
                 val cardCarro = TextView(this)
                 cardCarro.textSize = 16f

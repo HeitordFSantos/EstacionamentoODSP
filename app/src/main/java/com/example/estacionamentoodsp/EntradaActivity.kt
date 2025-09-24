@@ -3,9 +3,12 @@ package com.example.estacionamentoodsp
 import android.content.ContentValues
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -50,29 +53,44 @@ class EntradaActivity : AppCompatActivity() {
                 // 1. Pegamos uma versão "escrevível" do nosso banco de dados
                 val db = dbHelper.writableDatabase
 
+                // 1.1 Garante que o cadastro master exista (atualizando os dados informados)
+                val veiculoMasterId = garantirCadastroMaster(
+                    db,
+                    placa,
+                    nomeDono,
+                    telefone,
+                    modelo
+                )
+
+                if (veiculoMasterId == -1L) {
+                    Toast.makeText(this, "Erro ao acessar o cadastro master.", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
                 // 2. Pegamos a data e hora atuais e formatamos como texto
                 val formatoData = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
                 val dataEntrada = formatoData.format(Date())
 
                 // 3. Criamos um "mapa" de valores, onde o nome da coluna é a chave
                 val values = ContentValues().apply {
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA, placa)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nomeDono)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA, dataEntrada)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_VEICULO_ID, veiculoMasterId)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_PLACA, placa)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO, nomeDono)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_TELEFONE, telefone)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_MODELO, modelo)
+                    put(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA, dataEntrada)
                 }
 
                 // 4. Inserimos a nova linha no banco de dados.
                 // O metodo insert() retorna -1 se houver um erro.
-                val newRowId = db.insert(DatabaseContract.VeiculoEntry.TABLE_NAME, null, values)
+                val newRowId = db.insert(DatabaseContract.PatioEntry.TABLE_NAME, null, values)
 
                 // 5. Verificamos se a inserção deu certo e mostramos a mensagem apropriada
                 if (newRowId == -1L) {
                     // MUDANÇA AQUI: Mensagem de erro mais genérica
                     Toast.makeText(this, "Erro ao registrar o veículo.", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(this, "Veículo de placa $placa registrado!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Veículo de placa $placa registrado no pátio!", Toast.LENGTH_LONG).show()
                     finish()
                 }
 
@@ -86,5 +104,60 @@ class EntradaActivity : AppCompatActivity() {
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
+    }
+
+    private fun garantirCadastroMaster(
+        db: SQLiteDatabase,
+        placa: String,
+        nomeDono: String,
+        telefone: String,
+        modelo: String
+    ): Long {
+        val projection = arrayOf(BaseColumns._ID)
+        val selection = "${DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA} = ?"
+        val selectionArgs = arrayOf(placa)
+
+        var cursor: Cursor? = null
+        return try {
+            cursor = db.query(
+                DatabaseContract.VeiculoEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+            )
+
+            if (cursor.moveToFirst()) {
+                val veiculoId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID))
+
+                val valoresAtualizados = ContentValues().apply {
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nomeDono)
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
+                }
+
+                db.update(
+                    DatabaseContract.VeiculoEntry.TABLE_NAME,
+                    valoresAtualizados,
+                    "${BaseColumns._ID} = ?",
+                    arrayOf(veiculoId.toString())
+                )
+
+                veiculoId
+            } else {
+                val valoresNovoCadastro = ContentValues().apply {
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA, placa)
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nomeDono)
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
+                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
+                }
+
+                db.insert(DatabaseContract.VeiculoEntry.TABLE_NAME, null, valoresNovoCadastro)
+            }
+        } finally {
+            cursor?.close()
+        }
     }
 }
