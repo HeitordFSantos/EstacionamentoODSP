@@ -90,14 +90,14 @@ class RelatorioActivity : AppCompatActivity() {
         val stringBuilder = StringBuilder()
 
         val projection = arrayOf(
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA
+            DatabaseContract.PatioEntry.COLUMN_NAME_PLACA,
+            DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO,
+            DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA,
+            DatabaseContract.PatioEntry.COLUMN_NAME_DATA_SAIDA
         )
 
         // --- LÓGICA DE BUSCA DINÂMICA ---
-        val selection = "${DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA} LIKE ?"
+        val selection = "${DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA} LIKE ?"
         val selectionArgs = when (tipo) {
             getString(R.string.tipo_relatorio_mensal) -> arrayOf("%$periodo%") // Busca por MM/AAAA
             getString(R.string.tipo_relatorio_anual) -> arrayOf("%$periodo%")   // Busca por AAAA
@@ -105,7 +105,7 @@ class RelatorioActivity : AppCompatActivity() {
         }
 
         val cursor: Cursor = db.query(
-            DatabaseContract.VeiculoEntry.TABLE_NAME,
+            DatabaseContract.PatioEntry.TABLE_NAME,
             projection,
             selection,
             selectionArgs,
@@ -119,10 +119,10 @@ class RelatorioActivity : AppCompatActivity() {
         } else {
             // A lógica para exibir o resultado continua a mesma
             while (cursor.moveToNext()) {
-                val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA))
-                val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
-                val dataEntrada = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA))
-                val dataSaida = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA)) ?: "Ainda no pátio"
+                val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_PLACA))
+                val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO))
+                val dataEntrada = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA))
+                val dataSaida = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_SAIDA)) ?: "Ainda no pátio"
                 stringBuilder.append("PLACA: $placa\n")
                 stringBuilder.append("DONO: $nome\n")
                 stringBuilder.append("ENTRADA: $dataEntrada\n")

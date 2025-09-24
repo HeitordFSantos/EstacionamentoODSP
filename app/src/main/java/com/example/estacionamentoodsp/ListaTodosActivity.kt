@@ -38,8 +38,8 @@ class ListaTodosActivity : AppCompatActivity() {
         val projection = arrayOf(
             DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA,
             DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA,
-            DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA // Incluímos a data de saída
+            DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE,
+            DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO
         )
 
         // Busca sem filtro para trazer todos os registros
@@ -58,8 +58,8 @@ class ListaTodosActivity : AppCompatActivity() {
             while (cursor.moveToNext()) {
                 val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA))
                 val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
-                val dataEntrada = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_ENTRADA))
-                val dataSaida = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_DATA_SAIDA))
+                val telefone = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE))
+                val modelo = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO))
 
                 // Cria um "card" de texto para cada veículo
                 val cardCarro = TextView(this)
@@ -69,9 +69,8 @@ class ListaTodosActivity : AppCompatActivity() {
                 // Monta o texto para exibição
                 cardCarro.text = "PLACA: $placa\n" +
                         "DONO: $nome\n" +
-                        "ENTRADA: $dataEntrada\n" +
-                        // Se a data de saída for nula ou vazia, mostra "Ainda no pátio"
-                        "SAÍDA: ${if (dataSaida.isNullOrEmpty()) "Ainda no pátio" else dataSaida}\n" +
+                        "TELEFONE: $telefone\n" +
+                        "MODELO: ${if (modelo.isNullOrEmpty()) "Não informado" else modelo}\n" +
                         "-----------------------------"
 
                 // Adiciona o card de texto ao contêiner na tela
