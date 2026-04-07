@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tamanhos de tela mínimos -->
+    <dimen name="min_screen_height">600dp</dimen>
+
+    <!-- Padding geral das telas -->
+    <dimen name="screen_padding_horizontal">20dp</dimen>
+    <dimen name="screen_padding_vertical">24dp</dimen>
+
+    <!-- Margens -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <!-- Cards -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+
+    <!-- Botões -->
+    <dimen name="button_height">52dp</dimen>
+
+    <!-- Textos -->
+    <dimen name="text_size_hero">48sp</dimen>
+    <dimen name="text_size_title">26sp</dimen>
+    <dimen name="text_size_subtitle">18sp</dimen>
+    <dimen name="text_size_body">15sp</dimen>
+    <dimen name="text_size_button">15sp</dimen>
+    <dimen name="text_size_caption">13sp</dimen>
+</resources>

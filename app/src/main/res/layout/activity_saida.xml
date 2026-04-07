@@ -1,70 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    tools:context=".SaidaActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textViewSaidaTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/SaidaTItle"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:textColor="@color/ondadura_black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:minHeight="@dimen/min_screen_height"
+        android:paddingHorizontal="@dimen/screen_padding_horizontal"
+        android:paddingVertical="@dimen/screen_padding_vertical"
+        tools:context=".SaidaActivity">
 
-    <Button
-        android:id="@+id/buttonLista"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="100dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/buttonLista"
-        android:textColor="@color/ondadura_white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewSaidaTitle" />
+        <TextView
+            android:id="@+id/textViewSaidaTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/SaidaTItle"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            android:textColor="@color/ondadura_black"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextPlacaSaida"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="64dp"
-        android:autofillHints=""
-        android:hint="@string/PlacaSaida"
-        android:inputType="textCapCharacters"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLista" />
+        <!-- Card de saída rápida -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSaidaRapida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/card_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewSaidaTitle">
 
-    <Button
-        android:id="@+id/buttonConfirmarSaida"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/ConfirmarSaida"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextPlacaSaida" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
 
-    <Button
-        android:id="@+id/buttonVoltarMenu"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/button_voltar"
-        android:textColor="@color/ondadura_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/ondadura_purple" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:text="@string/saida_instrucao"
+                    android:textColor="@color/ondadura_gray"
+                    android:textSize="@dimen/text_size_body" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:hint="@string/PlacaSaida"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextPlacaSaida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="7"
+                        android:gravity="center" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonConfirmarSaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/ConfirmarSaida"
+                    android:textColor="@color/ondadura_white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Separador -->
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerSaida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardSaidaRapida" />
+
+        <!-- Card de ver lista de veículos -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardVerLista"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/card_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerSaida">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:text="@string/saida_ver_lista"
+                    android:textColor="@color/ondadura_gray"
+                    android:textSize="@dimen/text_size_body" />
+
+                <Button
+                    android:id="@+id/buttonLista"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/buttonLista"
+                    android:textColor="@color/ondadura_white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botão voltar -->
+        <Button
+            android:id="@+id/buttonVoltarMenu"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/button_voltar"
+            android:textColor="@color/ondadura_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardVerLista"
+            app:strokeColor="@color/ondadura_purple" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

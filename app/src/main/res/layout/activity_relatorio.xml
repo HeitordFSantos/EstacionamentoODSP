@@ -1,121 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".RelatorioActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textViewRelatorioTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_relatorio"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupTipoRelatorio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewRelatorioTitle">
-
-        <RadioButton
-            android:id="@+id/radioButtonDiario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/tipo_relatorio_diario" />
-
-        <RadioButton
-            android:id="@+id/radioButtonMensal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tipo_relatorio_mensal" />
-
-        <RadioButton
-            android:id="@+id/radioButtonAnual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tipo_relatorio_anual" />
-    </RadioGroup>
-
-    <EditText
-        android:id="@+id/editTextPeriodo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/hint_data_relatorio"
-        android:inputType="text"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupTipoRelatorio" />
-
-    <Button
-        android:id="@+id/buttonGerarRelatorio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_gerar_relatorio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPeriodo" />
-
-    <ScrollView
-        android:id="@+id/scrollViewRelatorio"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonVoltarRelatorio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGerarRelatorio">
+        android:minHeight="@dimen/min_screen_height"
+        android:paddingHorizontal="@dimen/screen_padding_horizontal"
+        android:paddingVertical="@dimen/screen_padding_vertical"
+        tools:context=".RelatorioActivity">
 
         <TextView
-            android:id="@+id/textViewResultadoRelatorio"
-            android:layout_width="match_parent"
+            android:id="@+id/textViewRelatorioTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/nenhum_registro"
-            android:textSize="16sp" />
-    </ScrollView>
+            android:text="@string/title_relatorio"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/ondadura_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonVoltarRelatorio"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/button_voltar"
-        android:textColor="@color/ondadura_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonExportarPdf"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/ondadura_purple" />
+        <!-- Card de filtro do relatório -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardFiltroRelatorio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/card_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewRelatorioTitle">
 
-    <Button
-        android:id="@+id/buttonExportarPdf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_exportar_pdf"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonVoltarRelatorio" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:text="@string/relatorio_tipo_label"
+                    android:textColor="@color/ondadura_gray"
+                    android:textSize="@dimen/text_size_caption" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupTipoRelatorio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioButtonDiario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/tipo_relatorio_diario" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonMensal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/tipo_relatorio_mensal" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonAnual"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/tipo_relatorio_anual" />
+                </RadioGroup>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:hint="@string/hint_data_relatorio"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextPeriodo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:gravity="center" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonGerarRelatorio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/button_gerar_relatorio"
+                    android:textColor="@color/ondadura_white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card de resultado do relatório -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardResultadoRelatorio"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/card_background"
+            app:layout_constraintBottom_toTopOf="@+id/layoutBotoesRelatorio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardFiltroRelatorio"
+            app:layout_constraintHeight_min="120dp">
+
+            <ScrollView
+                android:id="@+id/scrollViewRelatorio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textViewResultadoRelatorio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/card_padding"
+                    android:text="@string/nenhum_registro"
+                    android:textSize="@dimen/text_size_body" />
+            </ScrollView>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botões de ação -->
+        <LinearLayout
+            android:id="@+id/layoutBotoesRelatorio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/buttonVoltarRelatorio"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:text="@string/button_voltar"
+                android:textColor="@color/ondadura_purple"
+                app:strokeColor="@color/ondadura_purple" />
+
+            <Button
+                android:id="@+id/buttonExportarPdf"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/margin_small"
+                android:backgroundTint="@color/ondadura_purple"
+                android:text="@string/button_exportar_pdf"
+                android:textColor="@color/ondadura_white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

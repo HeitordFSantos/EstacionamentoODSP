@@ -1,78 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="@string/title"
-        android:textColor="@color/ondadura_black"
-        android:textSize="65sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:minHeight="@dimen/min_screen_height"
+        android:paddingHorizontal="@dimen/screen_padding_horizontal"
+        android:paddingVertical="@dimen/screen_padding_vertical"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/buttonEntrada"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_entrada"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
+        <!-- Logo / Ícone do app -->
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/margin_large"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonSaida"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_saida"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonEntrada" />
+        <!-- Título principal -->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textColor="@color/ondadura_black"
+            android:textSize="@dimen/text_size_hero"
+            android:textStyle="bold"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="28sp"
+            android:autoSizeMaxTextSize="56sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewLogo" />
 
-    <Button
-        android:id="@+id/buttonRelatorio"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_relatorio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonSaida" />
-    <Button
-        android:id="@+id/buttonCadastro"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_cadastro"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonRelatorio" />
-    <TextView
-        android:id="@+id/textViewCreator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="@string/creator"
-        android:textColor="@color/ondadura_gray"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!-- Card de navegação principal -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/card_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <Button
+                    android:id="@+id/buttonEntrada"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/button_entrada"
+                    android:textSize="@dimen/text_size_button"
+                    android:textColor="@color/ondadura_white" />
+
+                <Button
+                    android:id="@+id/buttonSaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/button_saida"
+                    android:textSize="@dimen/text_size_button"
+                    android:textColor="@color/ondadura_white" />
+
+                <Button
+                    android:id="@+id/buttonRelatorio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/button_relatorio"
+                    android:textSize="@dimen/text_size_button"
+                    android:textColor="@color/ondadura_white" />
+
+                <Button
+                    android:id="@+id/buttonCadastro"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="@string/button_cadastro"
+                    android:textSize="@dimen/text_size_button"
+                    android:textColor="@color/ondadura_white" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Rodapé com nome do criador -->
+        <TextView
+            android:id="@+id/textViewCreator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:gravity="center"
+            android:text="@string/creator"
+            android:textColor="@color/ondadura_gray"
+            android:textSize="@dimen/text_size_caption"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardMenu" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
