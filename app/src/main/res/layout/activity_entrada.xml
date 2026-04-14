@@ -1,102 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:fillViewport="true"
     tools:context=".EntradaActivity">
 
-    <TextView
-        android:id="@+id/textViewEntradaTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_entrada"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/ondadura_black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/editTextPlaca"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/placa"
-        android:inputType="textCapCharacters"
-        app:layout_constraintTop_toBottomOf="@id/textViewEntradaTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/textViewEntradaTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Entrada de Veículos"
+            android:textColor="@color/ondadura_black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextNomeDono"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/nome"
-        android:inputType="textPersonName|textCapWords"
-        app:layout_constraintTop_toBottomOf="@id/editTextPlaca"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <EditText
+            android:id="@+id/editTextPlacaEntrada"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:hint="Digite a placa"
+            android:inputType="textCapCharacters"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewEntradaTitle"
+            app:layout_constraintWidth_max="400dp" />
 
-    <EditText
-        android:id="@+id/editTextTelefone"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/telefone"
-        android:inputType="phone"
-        app:layout_constraintTop_toBottomOf="@id/editTextNomeDono"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:id="@+id/layoutCadastroRapido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextPlacaEntrada"
+            app:layout_constraintWidth_max="400dp"
+            tools:visibility="visible">
 
-    <EditText
-        android:id="@+id/editTextMarca"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/marca"
-        android:inputType="textCapWords"
-        app:layout_constraintTop_toBottomOf="@id/editTextTelefone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Veículo não cadastrado. Preencha os dados abaixo:"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
-    <EditText
-        android:id="@+id/editTextModelo"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/modelo"
-        android:inputType="textCapWords"
-        app:layout_constraintTop_toBottomOf="@id/editTextMarca"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <EditText
+                android:id="@+id/editTextNomeNovo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Nome do Dono"
+                android:inputType="textPersonName|textCapWords" />
 
-    <Button
-        android:id="@+id/buttonVoltar"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/button_voltar"
-        android:textColor="@color/ondadura_purple"
-        app:strokeColor="@color/ondadura_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/buttonConfirmar"/>
+            <EditText
+                android:id="@+id/editTextTelefoneNovo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Telefone (WhatsApp)"
+                android:inputType="phone" />
 
-    <Button
-        android:id="@+id/buttonConfirmar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/button_confirmar"
-        android:textAlignment="center"
-        android:backgroundTint="@color/ondadura_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/buttonVoltar" />
+            <EditText
+                android:id="@+id/editTextModeloNovo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Modelo do Veículo"
+                android:inputType="textCapWords" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonDarEntrada"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/ondadura_purple"
+            android:text="Registrar Entrada"
+            android:textColor="@color/ondadura_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCadastroRapido"
+            app:layout_constraintWidth_max="400dp" />
+
+        <Button
+            android:id="@+id/buttonVoltar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="Voltar"
+            android:textColor="@color/ondadura_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonDarEntrada"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintWidth_max="400dp"
+            app:strokeColor="@color/ondadura_purple" />
+
+        <!-- Botão removido/escondido pois agora o cadastro é integrado -->
+        <Button
+            android:id="@+id/buttonIrCadastro"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

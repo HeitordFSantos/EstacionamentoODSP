@@ -1,163 +1,158 @@
 package com.example.estacionamentoodsp
 
 import android.content.ContentValues
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
+import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class EntradaActivity : AppCompatActivity() {
 
-    // Declara o nosso "ajudante" de banco de dados.
-    // Usamos "lateinit" porque ele será inicializado depois, no onCreate.
     private lateinit var dbHelper: DatabaseHelper
+    private lateinit var layoutCadastroRapido: LinearLayout
+    private lateinit var editTextNomeNovo: EditText
+    private lateinit var editTextTelefoneNovo: EditText
+    private lateinit var editTextModeloNovo: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_entrada)
 
-        // Inicializa o ajudante, "contratando" o nosso construtor de banco de dados.
         dbHelper = DatabaseHelper(this)
 
-        // --- Encontrando todos os componentes visuais da tela ---
+        val editTextPlaca = findViewById<EditText>(R.id.editTextPlacaEntrada)
+        val botaoDarEntrada = findViewById<Button>(R.id.buttonDarEntrada)
         val botaoVoltar = findViewById<Button>(R.id.buttonVoltar)
-        val botaoConfirmar = findViewById<Button>(R.id.buttonConfirmar)
-        val editTextPlaca = findViewById<EditText>(R.id.editTextPlaca)
-        val editTextNomeDono = findViewById<EditText>(R.id.editTextNomeDono)
-        val editTextTelefone = findViewById<EditText>(R.id.editTextTelefone)
-        val editTextModelo = findViewById<EditText>(R.id.editTextModelo)
+        
+        layoutCadastroRapido = findViewById(R.id.layoutCadastroRapido)
+        editTextNomeNovo = findViewById(R.id.editTextNomeNovo)
+        editTextTelefoneNovo = findViewById(R.id.editTextTelefoneNovo)
+        editTextModeloNovo = findViewById(R.id.editTextModeloNovo)
 
-        // --- Lógica do Botão Voltar (sem alterações) ---
-        botaoVoltar.setOnClickListener {
-            finish()
-        }
+        botaoVoltar.setOnClickListener { finish() }
 
-        // --- LÓGICA DO BOTÃO CONFIRMAR (MODIFICADA) ---
-        botaoConfirmar.setOnClickListener {
-            val placa = editTextPlaca.text.toString()
-            val nomeDono = editTextNomeDono.text.toString()
-            val telefone = editTextTelefone.text.toString()
-            val modelo = editTextModelo.text.toString()
+        botaoDarEntrada.setOnClickListener {
+            val placa = editTextPlaca.text.toString().trim().uppercase()
 
-            // Verificação: Placa, Nome e Telefone são obrigatórios (como no seu rascunho)
-            if (placa.isNotEmpty() && nomeDono.isNotEmpty() && telefone.isNotEmpty()) {
-                // --- A MÁGICA DO BANCO DE DADOS ACONTECE AQUI ---
-
-                // 1. Pegamos uma versão "escrevível" do nosso banco de dados
-                val db = dbHelper.writableDatabase
-
-                // 1.1 Garante que o cadastro master exista (atualizando os dados informados)
-                val veiculoMasterId = garantirCadastroMaster(
-                    db,
-                    placa,
-                    nomeDono,
-                    telefone,
-                    modelo
-                )
-
-                if (veiculoMasterId == -1L) {
-                    Toast.makeText(this, "Erro ao acessar o cadastro master.", Toast.LENGTH_LONG).show()
-                    return@setOnClickListener
-                }
-
-                // 2. Pegamos a data e hora atuais e formatamos como texto
-                val formatoData = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-                val dataEntrada = formatoData.format(Date())
-
-                // 3. Criamos um "mapa" de valores, onde o nome da coluna é a chave
-                val values = ContentValues().apply {
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_VEICULO_ID, veiculoMasterId)
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_PLACA, placa)
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO, nomeDono)
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_TELEFONE, telefone)
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_MODELO, modelo)
-                    put(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA, dataEntrada)
-                }
-
-                // 4. Inserimos a nova linha no banco de dados.
-                // O metodo insert() retorna -1 se houver um erro.
-                val newRowId = db.insert(DatabaseContract.PatioEntry.TABLE_NAME, null, values)
-
-                // 5. Verificamos se a inserção deu certo e mostramos a mensagem apropriada
-                if (newRowId == -1L) {
-                    // MUDANÇA AQUI: Mensagem de erro mais genérica
-                    Toast.makeText(this, "Erro ao registrar o veículo.", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, "Veículo de placa $placa registrado no pátio!", Toast.LENGTH_LONG).show()
-                    finish()
-                }
-
-            } else {
-                Toast.makeText(this, "Por favor, preencha Placa, Nome e Telefone.", Toast.LENGTH_LONG).show()
+            if (placa.isEmpty()) {
+                Toast.makeText(this, "Digite a placa!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-        }
-    }
 
-    // É uma boa prática fechar a conexão com o banco de dados quando a tela é destruída
-    override fun onDestroy() {
-        dbHelper.close()
-        super.onDestroy()
-    }
+            val db = dbHelper.writableDatabase
 
-    private fun garantirCadastroMaster(
-        db: SQLiteDatabase,
-        placa: String,
-        nomeDono: String,
-        telefone: String,
-        modelo: String
-    ): Long {
-        val projection = arrayOf(BaseColumns._ID)
-        val selection = "${DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA} = ?"
-        val selectionArgs = arrayOf(placa)
-
-        var cursor: Cursor? = null
-        return try {
-            cursor = db.query(
+            // 1. Verifica se o veículo existe no cadastro master
+            val cursor = db.query(
                 DatabaseContract.VeiculoEntry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
+                arrayOf(
+                    BaseColumns._ID,
+                    DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO,
+                    DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE,
+                    DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO
+                ),
+                "${DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA} = ?",
+                arrayOf(placa),
+                null, null, null
             )
 
             if (cursor.moveToFirst()) {
+                // VEÍCULO JÁ CADASTRADO
                 val veiculoId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID))
+                val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
+                val telefone = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE))
+                val modelo = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO)) ?: ""
+                cursor.close()
 
-                val valoresAtualizados = ContentValues().apply {
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nomeDono)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
-                }
-
-                db.update(
-                    DatabaseContract.VeiculoEntry.TABLE_NAME,
-                    valoresAtualizados,
-                    "${BaseColumns._ID} = ?",
-                    arrayOf(veiculoId.toString())
-                )
-
-                veiculoId
+                layoutCadastroRapido.visibility = View.GONE
+                registrarEntradaNoPatio(veiculoId, placa, nome, telefone, modelo)
             } else {
-                val valoresNovoCadastro = ContentValues().apply {
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA, placa)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nomeDono)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
-                    put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
-                }
+                // VEÍCULO NÃO CADASTRADO
+                cursor.close()
+                
+                if (layoutCadastroRapido.visibility == View.GONE) {
+                    // Primeira vez: mostra os campos para preencher
+                    layoutCadastroRapido.visibility = View.VISIBLE
+                    Toast.makeText(this, "Veículo novo! Preencha os dados para cadastrar e dar entrada.", Toast.LENGTH_LONG).show()
+                } else {
+                    // Segunda vez: tenta cadastrar e dar entrada
+                    val nome = editTextNomeNovo.text.toString().trim()
+                    val telefone = editTextTelefoneNovo.text.toString().trim()
+                    val modelo = editTextModeloNovo.text.toString().trim()
 
-                db.insert(DatabaseContract.VeiculoEntry.TABLE_NAME, null, valoresNovoCadastro)
+                    if (nome.isEmpty() || telefone.isEmpty() || modelo.isEmpty()) {
+                        Toast.makeText(this, "Por favor, preencha todos os campos do veículo.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Realiza o cadastro master e a entrada simultaneamente
+                        val novoVeiculoId = cadastrarVeiculoMaster(placa, nome, telefone, modelo)
+                        if (novoVeiculoId != -1L) {
+                            registrarEntradaNoPatio(novoVeiculoId, placa, nome, telefone, modelo)
+                        } else {
+                            Toast.makeText(this, "Erro ao cadastrar veículo.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
-        } finally {
-            cursor?.close()
         }
+    }
+
+    private fun cadastrarVeiculoMaster(placa: String, nome: String, telefone: String, modelo: String): Long {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA, placa)
+            put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nome)
+            put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
+            put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
+        }
+        return db.insert(DatabaseContract.VeiculoEntry.TABLE_NAME, null, values)
+    }
+
+    private fun registrarEntradaNoPatio(veiculoId: Long, placa: String, nome: String, telefone: String, modelo: String) {
+        val db = dbHelper.writableDatabase
+
+        // Verifica se já está no pátio
+        val cursorPatio = db.query(
+            DatabaseContract.PatioEntry.TABLE_NAME,
+            arrayOf(BaseColumns._ID),
+            "${DatabaseContract.PatioEntry.COLUMN_NAME_PLACA} = ? AND ${DatabaseContract.PatioEntry.COLUMN_NAME_DATA_SAIDA} IS NULL",
+            arrayOf(placa),
+            null, null, null
+        )
+
+        if (cursorPatio.moveToFirst()) {
+            Toast.makeText(this, "Este veículo já está no pátio!", Toast.LENGTH_LONG).show()
+            cursorPatio.close()
+        } else {
+            cursorPatio.close()
+            val dataEntrada = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+
+            val values = ContentValues().apply {
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_VEICULO_ID, veiculoId)
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_PLACA, placa)
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_NOME_DONO, nome)
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_TELEFONE, telefone)
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_MODELO, modelo)
+                put(DatabaseContract.PatioEntry.COLUMN_NAME_DATA_ENTRADA, dataEntrada)
+            }
+
+            val newRowId = db.insert(DatabaseContract.PatioEntry.TABLE_NAME, null, values)
+            if (newRowId != -1L) {
+                Toast.makeText(this, "Entrada registrada com sucesso!", Toast.LENGTH_LONG).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Erro ao registrar entrada no pátio.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 }

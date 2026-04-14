@@ -9,47 +9,56 @@
 
     <TextView
         android:id="@+id/textViewListaTodosTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/title_lista_todos"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/ondadura_black"
         android:gravity="center"
+        android:text="Todos os Veículos"
+        android:textColor="@color/ondadura_black"
+        android:textSize="26sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#10000000"
         app:layout_constraintBottom_toTopOf="@+id/buttonVoltarListaTodos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewListaTodosTitle">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutCarrosTodos"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp" />
-    </ScrollView>
+            android:layout_height="match_parent">
 
-    <Button
+            <LinearLayout
+                android:id="@+id/linearLayoutCarrosTodos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp" />
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonVoltarListaTodos"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/ondadura_purple"
-        android:text="@string/button_voltar"
-        android:textColor="@color/ondadura_white"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="Voltar"
+        android:textColor="@color/ondadura_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/ondadura_purple" />
+        app:layout_constraintWidth_max="400dp"
+        app:strokeColor="@color/ondadura_purple"
+        app:strokeWidth="2dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

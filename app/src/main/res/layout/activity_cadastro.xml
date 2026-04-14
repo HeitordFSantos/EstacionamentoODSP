@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".CadastroActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        tools:context=".CadastroActivity">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/textViewCadastroTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="@string/title_cadastro"
+            android:text="Gerenciar Veículos"
             android:textColor="@color/ondadura_black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -29,34 +29,40 @@
             android:id="@+id/buttonlistarTodos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@color/ondadura_purple"
-            android:text="@string/button_listar_todos"
-            android:textColor="@color/ondadura_black"
+            android:text="Ver Todos os Cadastrados"
+            android:textColor="@color/ondadura_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewCadastroTitle" />
+            app:layout_constraintTop_toBottomOf="@id/textViewCadastroTitle"
+            app:layout_constraintWidth_max="400dp" />
 
         <EditText
             android:id="@+id/editTextBuscaPlaca"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:autofillHints="Placa"
-            android:hint="@string/hint_buscar_placa"
+            android:hint="Buscar Placa"
             android:inputType="textCapCharacters"
+            android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@+id/buttonBuscar"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonlistarTodos" />
+            app:layout_constraintTop_toBottomOf="@id/buttonlistarTodos"
+            app:layout_constraintWidth_max="300dp" />
 
         <Button
             android:id="@+id/buttonBuscar"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/button_buscar"
+            android:backgroundTint="@color/ondadura_purple"
+            android:text="Buscar"
+            android:textColor="@color/ondadura_white"
             app:layout_constraintBottom_toBottomOf="@id/editTextBuscaPlaca"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editTextBuscaPlaca"
             app:layout_constraintTop_toTopOf="@id/editTextBuscaPlaca" />
 
         <View
@@ -64,80 +70,129 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextBuscaPlaca" />
 
-        <LinearLayout
-            android:id="@+id/layoutDadosVeiculo"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDadosVeiculo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="vertical"
+            android:layout_marginTop="24dp"
             android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintWidth_max="500dp"
+            app:strokeColor="@color/ondadura_purple"
+            app:strokeWidth="1dp"
             tools:visibility="visible">
 
-            <EditText
-                android:id="@+id/editTextNomeEdicao"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
-                android:hint="@string/nome"
-                android:autofillHints="name"
-                android:inputType="textPersonName|textCapWords" />
-
-            <EditText
-                android:id="@+id/editTextTelefoneEdicao"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
-                android:hint="@string/telefone"
-                android:autofillHints="tel"
-                android:inputType="phone" />
-
-            <EditText
-                android:id="@+id/editTextModeloEdicao"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/modelo"
-                android:autofillHints="modelo"
-                android:inputType="textCapWords" />
-
-            <Button
-                android:id="@+id/buttonAlterar"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/ondadura_purple"
-                android:text="@string/button_alterar" />
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <Button
-                android:id="@+id/buttonExcluir"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_excluir"
-                android:textColor="@android:color/holo_red_dark" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewCardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Dados do Veículo"
+                    android:textColor="@color/ondadura_purple"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Nome do Dono">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextNomeEdicao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName|textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Telefone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTelefoneEdicao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:hint="Modelo do Veículo">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextModeloEdicao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonAlterar"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/ondadura_purple"
+                    android:text="Salvar Alterações"
+                    android:textColor="@color/ondadura_white" />
+
+                <Button
+                    android:id="@+id/buttonExcluir"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Excluir Cadastro"
+                    android:textColor="@android:color/holo_red_dark" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <Button
             android:id="@+id/buttonVoltarCadastro"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/button_voltar"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="Voltar ao Menu"
             android:textColor="@color/ondadura_purple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardDadosVeiculo"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintWidth_max="400dp"
             app:strokeColor="@color/ondadura_purple" />
+
+        <!-- ID invisível para controle interno se necessário, mas mantendo a estrutura original -->
+        <LinearLayout
+            android:id="@+id/layoutDadosVeiculo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

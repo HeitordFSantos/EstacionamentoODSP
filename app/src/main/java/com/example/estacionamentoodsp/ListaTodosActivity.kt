@@ -3,6 +3,7 @@ package com.example.estacionamentoodsp
 import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,24 +18,20 @@ class ListaTodosActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
-        // Encontrar os componentes da interface
         val botaoVoltar = findViewById<Button>(R.id.buttonVoltarListaTodos)
         val linearLayoutContainer = findViewById<LinearLayout>(R.id.linearLayoutCarrosTodos)
 
-        // Configurar o clique do botão Voltar
         botaoVoltar.setOnClickListener {
             finish()
         }
 
-        // Chamar a função que carrega e exibe os dados
         carregarTodosOsVeiculos(linearLayoutContainer)
     }
 
     private fun carregarTodosOsVeiculos(container: LinearLayout) {
         val db = dbHelper.readableDatabase
-        container.removeAllViews() // Limpa a lista antes de adicionar os novos itens
+        container.removeAllViews()
 
-        // Colunas que queremos buscar no banco de dados
         val projection = arrayOf(
             DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA,
             DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO,
@@ -42,42 +39,41 @@ class ListaTodosActivity : AppCompatActivity() {
             DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO
         )
 
-        // Busca sem filtro para trazer todos os registros
         val cursor: Cursor = db.query(
             DatabaseContract.VeiculoEntry.TABLE_NAME,
-            projection, null, null, null, null, null
+            projection, null, null, null, null, 
+            "${DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA} ASC"
         )
 
         if (cursor.count == 0) {
-            // Se não houver nenhum registro, exibe a mensagem de pátio vazio
             val textViewVazio = TextView(this)
-            textViewVazio.text = getString(R.string.nenhum_registro)
+            textViewVazio.text = "Nenhum veículo cadastrado."
+            textViewVazio.gravity = android.view.Gravity.CENTER
+            textViewVazio.setPadding(0, 50, 0, 0)
             container.addView(textViewVazio)
         } else {
-            // Se houver registros, percorre cada um deles
+            val inflater = LayoutInflater.from(this)
             while (cursor.moveToNext()) {
                 val placa = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA))
                 val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
                 val telefone = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE))
                 val modelo = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO))
 
-                // Cria um "card" de texto para cada veículo
-                val cardCarro = TextView(this)
-                cardCarro.textSize = 16f
-                cardCarro.setPadding(0, 16, 0, 16)
+                val itemView = inflater.inflate(R.layout.item_veiculo_lista, container, false)
+                
+                val tvPlaca = itemView.findViewById<TextView>(R.id.textViewPlacaLista)
+                val tvModelo = itemView.findViewById<TextView>(R.id.textViewModeloLista)
+                val tvDono = itemView.findViewById<TextView>(R.id.textViewDonoLista)
+                val tvTelefone = itemView.findViewById<TextView>(R.id.textViewTelefoneLista)
 
-                // Monta o texto para exibição
-                cardCarro.text = "PLACA: $placa\n" +
-                        "DONO: $nome\n" +
-                        "TELEFONE: $telefone\n" +
-                        "MODELO: ${if (modelo.isNullOrEmpty()) "Não informado" else modelo}\n" +
-                        "-----------------------------"
+                tvPlaca.text = placa
+                tvModelo.text = if (modelo.isNullOrEmpty()) "Modelo não informado" else modelo
+                tvDono.text = "Dono: $nome"
+                tvTelefone.text = "Tel: $telefone"
 
-                // Adiciona o card de texto ao contêiner na tela
-                container.addView(cardCarro)
+                container.addView(itemView)
             }
         }
-        // É crucial fechar o cursor para liberar os recursos
         cursor.close()
     }
 

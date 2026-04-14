@@ -1,31 +1,30 @@
 package com.example.estacionamentoodsp
 
 import android.content.ContentValues
-import android.content.Intent // Import necessário
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import android.provider.BaseColumns
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textfield.TextInputEditText
 
 class CadastroActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DatabaseHelper
     private var veiculoIdParaEdicao: Long = -1
 
-    // Declarar os componentes da interface
-    private lateinit var buttonVerTodos: Button // NOVO
+    // Componentes
+    private lateinit var buttonVerTodos: Button
     private lateinit var editTextBuscaPlaca: EditText
     private lateinit var buttonBuscar: Button
-    private lateinit var layoutDadosVeiculo: LinearLayout
-    private lateinit var editTextNomeEdicao: EditText
-    private lateinit var editTextTelefoneEdicao: EditText
-    private lateinit var editTextModeloEdicao: EditText
-    private lateinit var buttonAlterar: Button
+    private lateinit var cardDadosVeiculo: MaterialCardView
+    private lateinit var editTextNomeEdicao: TextInputEditText
+    private lateinit var editTextTelefoneEdicao: TextInputEditText
+    private lateinit var editTextModeloEdicao: TextInputEditText
+    private lateinit var buttonSalvar: Button
     private lateinit var buttonExcluir: Button
     private lateinit var buttonVoltar: Button
 
@@ -36,34 +35,34 @@ class CadastroActivity : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
 
         // Vincular os componentes
-        buttonVerTodos = findViewById(R.id.buttonlistarTodos) // NOVO
+        buttonVerTodos = findViewById(R.id.buttonlistarTodos)
         editTextBuscaPlaca = findViewById(R.id.editTextBuscaPlaca)
         buttonBuscar = findViewById(R.id.buttonBuscar)
-        layoutDadosVeiculo = findViewById(R.id.layoutDadosVeiculo)
+        cardDadosVeiculo = findViewById(R.id.cardDadosVeiculo)
         editTextNomeEdicao = findViewById(R.id.editTextNomeEdicao)
         editTextTelefoneEdicao = findViewById(R.id.editTextTelefoneEdicao)
         editTextModeloEdicao = findViewById(R.id.editTextModeloEdicao)
-        buttonAlterar = findViewById(R.id.buttonAlterar)
+        buttonSalvar = findViewById(R.id.buttonAlterar)
         buttonExcluir = findViewById(R.id.buttonExcluir)
         buttonVoltar = findViewById(R.id.buttonVoltarCadastro)
 
-        // Configurar os cliques dos botões
+        // Configurar botões
         buttonVerTodos.setOnClickListener {
             startActivity(Intent(this, ListaTodosActivity::class.java))
         }
         buttonBuscar.setOnClickListener { buscarVeiculo() }
-        buttonAlterar.setOnClickListener { alterarVeiculo() }
+        buttonSalvar.setOnClickListener { salvarVeiculo() }
         buttonExcluir.setOnClickListener { confirmarExclusao() }
         buttonVoltar.setOnClickListener { finish() }
     }
 
-    // As funções buscarVeiculo(), alterarVeiculo(), confirmarExclusao(), excluirVeiculo() e onDestroy() continuam as mesmas
     private fun buscarVeiculo() {
-        val placa = editTextBuscaPlaca.text.toString()
+        val placa = editTextBuscaPlaca.text.toString().trim().uppercase()
         if (placa.isEmpty()) {
-            Toast.makeText(this, "Por favor, digite uma placa.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Digite a placa.", Toast.LENGTH_SHORT).show()
             return
         }
+
         val db = dbHelper.readableDatabase
         val projection = arrayOf(
             BaseColumns._ID,
@@ -73,19 +72,16 @@ class CadastroActivity : AppCompatActivity() {
         )
         val selection = "${DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA} = ?"
         val selectionArgs = arrayOf(placa)
-        val sortOrder = "${BaseColumns._ID} DESC"
+
         val cursor = db.query(
             DatabaseContract.VeiculoEntry.TABLE_NAME,
             projection,
             selection,
             selectionArgs,
-            null,
-            null,
-            sortOrder,
-            "1"
+            null, null, null
         )
-        if (cursor.count > 0) {
-            cursor.moveToFirst()
+
+        if (cursor.moveToFirst()) {
             veiculoIdParaEdicao = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID))
             val nome = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO))
             val telefone = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE))
@@ -94,64 +90,82 @@ class CadastroActivity : AppCompatActivity() {
             editTextNomeEdicao.setText(nome)
             editTextTelefoneEdicao.setText(telefone)
             editTextModeloEdicao.setText(modelo)
-            layoutDadosVeiculo.visibility = View.VISIBLE
-            Toast.makeText(this, "Veículo encontrado. Pode editar os dados.", Toast.LENGTH_SHORT).show()
+            
+            cardDadosVeiculo.visibility = View.VISIBLE
+            buttonSalvar.text = "Salvar Alterações"
+            Toast.makeText(this, "Veículo encontrado.", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, getString(R.string.veiculo_nao_encontrado), Toast.LENGTH_SHORT).show()
-            layoutDadosVeiculo.visibility = View.GONE
+            veiculoIdParaEdicao = -1L
+            editTextNomeEdicao.text?.clear()
+            editTextTelefoneEdicao.text?.clear()
+            editTextModeloEdicao.text?.clear()
+            
+            cardDadosVeiculo.visibility = View.VISIBLE
+            buttonSalvar.text = "Cadastrar Novo"
+            Toast.makeText(this, "Placa não cadastrada. Preencha para criar.", Toast.LENGTH_SHORT).show()
         }
         cursor.close()
     }
 
-    private fun alterarVeiculo() {
-        val nome = editTextNomeEdicao.text.toString()
-        val telefone = editTextTelefoneEdicao.text.toString()
-        val modelo = editTextModeloEdicao.text.toString()
+    private fun salvarVeiculo() {
+        val nome = editTextNomeEdicao.text.toString().trim()
+        val telefone = editTextTelefoneEdicao.text.toString().trim()
+        val modelo = editTextModeloEdicao.text.toString().trim()
+        val placa = editTextBuscaPlaca.text.toString().trim().uppercase()
 
-        if (nome.isEmpty() || telefone.isEmpty()) {
-            Toast.makeText(this, "Nome e Telefone são obrigatórios.", Toast.LENGTH_SHORT).show()
+        if (nome.isEmpty() || telefone.isEmpty() || placa.isEmpty()) {
+            Toast.makeText(this, "Placa, Nome e Telefone são obrigatórios.", Toast.LENGTH_SHORT).show()
             return
         }
+
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
+            put(DatabaseContract.VeiculoEntry.COLUMN_NAME_PLACA, placa)
             put(DatabaseContract.VeiculoEntry.COLUMN_NAME_NOME_DONO, nome)
             put(DatabaseContract.VeiculoEntry.COLUMN_NAME_TELEFONE, telefone)
             put(DatabaseContract.VeiculoEntry.COLUMN_NAME_MODELO, modelo)
         }
-        val selection = "${BaseColumns._ID} = ?"
-        val selectionArgs = arrayOf(veiculoIdParaEdicao.toString())
-        val count = db.update(DatabaseContract.VeiculoEntry.TABLE_NAME, values, selection, selectionArgs)
-        if (count > 0) {
-            Toast.makeText(this, getString(R.string.dados_alterados_sucesso), Toast.LENGTH_SHORT).show()
-            layoutDadosVeiculo.visibility = View.GONE
-            editTextBuscaPlaca.text.clear()
+
+        if (veiculoIdParaEdicao == -1L) {
+            val newId = db.insert(DatabaseContract.VeiculoEntry.TABLE_NAME, null, values)
+            if (newId != -1L) {
+                Toast.makeText(this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
+                cardDadosVeiculo.visibility = View.GONE
+                editTextBuscaPlaca.text.clear()
+            }
         } else {
-            Toast.makeText(this, getString(R.string.erro_alterar_dados), Toast.LENGTH_SHORT).show()
+            val selection = "${BaseColumns._ID} = ?"
+            val selectionArgs = arrayOf(veiculoIdParaEdicao.toString())
+            val count = db.update(DatabaseContract.VeiculoEntry.TABLE_NAME, values, selection, selectionArgs)
+            if (count > 0) {
+                Toast.makeText(this, "Cadastro atualizado!", Toast.LENGTH_SHORT).show()
+                cardDadosVeiculo.visibility = View.GONE
+                editTextBuscaPlaca.text.clear()
+            }
         }
     }
 
     private fun confirmarExclusao() {
         AlertDialog.Builder(this)
-            .setTitle("Confirmar Exclusão")
-            .setMessage("Tem certeza de que deseja excluir este registro? Esta ação não pode ser desfeita.")
-            .setPositiveButton("Sim, Excluir") { dialog, which ->
-                excluirVeiculo()
-            }
-            .setNegativeButton("Não, Cancelar", null)
+            .setTitle("Excluir veículo")
+            .setMessage("Deseja realmente excluir este cadastro?")
+            .setPositiveButton("Sim") { _, _ -> excluirVeiculo() }
+            .setNegativeButton("Não", null)
             .show()
     }
 
     private fun excluirVeiculo() {
+        if (veiculoIdParaEdicao == -1L) return
+
         val db = dbHelper.writableDatabase
         val selection = "${BaseColumns._ID} = ?"
         val selectionArgs = arrayOf(veiculoIdParaEdicao.toString())
         val count = db.delete(DatabaseContract.VeiculoEntry.TABLE_NAME, selection, selectionArgs)
+
         if (count > 0) {
-            Toast.makeText(this, getString(R.string.registro_excluido_sucesso), Toast.LENGTH_SHORT).show()
-            layoutDadosVeiculo.visibility = View.GONE
+            Toast.makeText(this, "Cadastro excluído.", Toast.LENGTH_SHORT).show()
+            cardDadosVeiculo.visibility = View.GONE
             editTextBuscaPlaca.text.clear()
-        } else {
-            Toast.makeText(this, getString(R.string.erro_excluir_registro), Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -21,7 +21,7 @@
     <string name="SaidaTItle">SAÍDA DE VEÍCULOS</string>
     <string name="buttonLista">LISTA DE CARROS NO PÁTIO</string>
     <string name="PlacaSaida">DIGITE A PLACA PARA A SAÍDA</string>
-    <string name="ConfirmarSaida">Registrar Saída</string>
+    <string name="ConfirmarSaida">Registrar Saída do Pátio</string>
     <string name="VoltarMenu">Voltar</string>
     <!--NOVOS TEXTOS PARA A TELA DE LISTA -->
     <string name="title_lista">Veículos no Pátio</string>
