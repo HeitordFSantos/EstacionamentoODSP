@@ -19,14 +19,15 @@
             android:gravity="center"
             android:text="Gerenciar Veículos"
             android:textColor="@color/ondadura_black"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/buttonlistarTodos"
+        <!-- Card de busca -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBusca"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

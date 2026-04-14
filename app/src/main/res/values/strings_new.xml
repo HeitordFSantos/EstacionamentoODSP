@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings novas adicionadas pelas melhorias de layout -->
+<resources>
+    <string name="saida_instrucao">Digite a placa do veículo que está saindo:</string>
+    <string name="saida_ver_lista">Prefere ver a lista de todos os veículos no pátio?</string>
+    <string name="relatorio_tipo_label">Selecione o período do relatório:</string>
+    <string name="cadastro_editar_titulo">Dados do Veículo</string>
+    <string name="contagem_veiculos_placeholder">Carregando veículos…</string>
+</resources>

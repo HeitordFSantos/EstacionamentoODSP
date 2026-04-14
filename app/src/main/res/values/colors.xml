@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ondadura_black">#FF000000</color>
-    <color name="ondadura_white">#FFFFFFFF</color>
-    <color name="ondadura_gray">#FF888888</color>
-    <color name="ondadura_purple">#5E35B1</color>
-    <color name="ondadura_yellow">#FFE05C</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Cores originais do projeto -->
+    <color name="ondadura_purple">#6200EE</color>
+    <color name="ondadura_black">#1C1B1F</color>
+    <color name="ondadura_white">#FFFFFF</color>
+    <color name="ondadura_gray">#757575</color>
+
+    <!-- Cor de fundo dos cards -->
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- WhatsApp verde oficial -->
+    <color name="whatsapp_green">#25D366</color>
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Valores para tablets e telas grandes (sw600dp+) -->
+<resources>
+    <dimen name="screen_padding_horizontal">48dp</dimen>
+    <dimen name="screen_padding_vertical">32dp</dimen>
+    <dimen name="card_padding">24dp</dimen>
+    <dimen name="text_size_hero">56sp</dimen>
+    <dimen name="text_size_title">30sp</dimen>
+    <dimen name="button_height">60dp</dimen>
+</resources>
